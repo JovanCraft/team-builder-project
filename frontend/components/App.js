@@ -68,7 +68,7 @@ export default function App() {
     const newMember = { fname, lname, bio, id: getId() }
     // setMembers({...members, newMember})
     setMembers(members.concat(newMember))
-    setValues(initialValues)
+
   }
   const editExistingMember = () => {
     // ✨ This takes the values of the form and replaces the data of the
@@ -80,6 +80,7 @@ export default function App() {
         return mem
       }
     }))
+    setEditing(null)
   }
   const onSubmit = evt => {
     // ✨ This is the submit handler for your form element.
@@ -93,6 +94,7 @@ export default function App() {
     } else {
       submitNewMember()
     }
+    setValues(initialValues)
   }
   return (
     <div>{/* ✨ Fix the JSX by wiring the necessary values and event handlers */}
