@@ -19,6 +19,12 @@ I enjoy bringing creativity and aesthetics to the digital world."
   },
 ]
 
+const initialValue = {
+  fname: "",
+  lname: "",
+  bio: ""
+}
+
 export default function App() {
   const [members, setMembers] = useState(teamMembers)
   const [editing, setEditing] = useState(null)
