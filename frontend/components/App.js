@@ -37,6 +37,12 @@ export default function App() {
     // with the data belonging to the member with id 2.
     // On the other hand, if the `editing` state changes back to null
     // then we need to reset the form back to empty values
+    if(editing == null){
+       setValues(initialValues)
+    } else {
+      const { fname,lname, bio } = members.find(mem => mem.id == editing)
+      setValues({ fname,lname, bio })
+    }
   }, [editing])
 
   const onChange = evt => {
@@ -53,6 +59,7 @@ export default function App() {
     // ✨ Put this function inside a click handler for the <button>Edit</button>.
     // It should change the value of `editing` state to be the id of the member
     // whose Edit button was clicked
+    setEditing(id)
   }
   const submitNewMember = () => {
     // This takes the values of the form and constructs a new member object,
@@ -61,10 +68,18 @@ export default function App() {
     const newMember = { fname, lname, bio, id: getId() }
     // setMembers({...members, newMember})
     setMembers(members.concat(newMember))
+    setValues(initialValues)
   }
   const editExistingMember = () => {
     // ✨ This takes the values of the form and replaces the data of the
     // member in the `members` state whose id matches the `editing` state
+    setMembers(members.map(mem => {
+      if(mem.id == editing){
+        return { ...mem, ...values }
+      } else {
+        return mem
+      }
+    }))
   }
   const onSubmit = evt => {
     // ✨ This is the submit handler for your form element.
@@ -73,7 +88,11 @@ export default function App() {
     // Don't allow the page to reload! Prevent the default behavior
     // and clean up the form after submitting
     evt.preventDefault()
-    submitNewMember()
+    if(editing){
+      editExistingMember()
+    } else {
+      submitNewMember()
+    }
   }
   return (
     <div>{/* ✨ Fix the JSX by wiring the necessary values and event handlers */}
@@ -87,7 +106,7 @@ export default function App() {
                   <h4>{mem.fname} {mem.lname}</h4>
                   <p>{mem.bio}</p>
                 </div>
-                <button>Edit</button>
+                <button onClick={() => edit(mem.id)}>Edit</button>
               </div>
             ))
           }
